@@ -2,10 +2,10 @@ package page.main;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 
-
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$$;
+import static com.codeborne.selenide.Selenide.*;
 
 public class MainPage {
 
@@ -32,14 +32,19 @@ public class MainPage {
     }
 
     public SelenideElement statusOrder(){
-        return $("[class='Header_Link__1TAG7'").as("Кнопка статус заказа");
+        return $("[class='Header_Link__1TAG7']").as("Кнопка статус заказа");
     }
 
     public SelenideElement fieldOrder(){
-        return $("[class='Input_Input__1iN_Z Header_Input__xIoUq'").as("Поле ввода номера заказа в верхнем правом углу");
+        return $("[class='Input_Input__1iN_Z Header_Input__xIoUq']").as("Поле ввода номера заказа в верхнем правом углу");
     }
 
     public SelenideElement buttonGo(){
-        return $("[class='Button_Button__ra12g Header_Button__28dPO'").as("Кнопка Go");
+        return $("[class='Button_Button__ra12g Header_Button__28dPO']").as("Кнопка Go");
+    }
+
+    public SelenideElement buttonBottomOrder(){
+        return $x(".//button[@class='Button_Button__ra12g Button_UltraBig__UU3Lp']").as("Кнопка Заказать внизу страницы");
+
     }
 }

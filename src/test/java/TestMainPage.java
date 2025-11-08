@@ -1,4 +1,5 @@
 
+import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
 import constatnts.Constants;
 import org.junit.jupiter.api.AfterEach;
@@ -14,6 +15,7 @@ import page.whoisthescooterfor.StepWhoIsScooter;
 
 
 import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestMainPage {
@@ -27,13 +29,14 @@ public class TestMainPage {
         stepMainPage = new StepMainPage();
         stepWhoIsScooter = new StepWhoIsScooter();
         mainPage = new MainPage();
+        Configuration.browserSize = "1920x1080";
+        open();
         open(Constants.MAIN_URL);
     }
     @AfterEach
     public void tearDown(){
         Selenide.closeWebDriver();
     }
-
 
 
     @Test
@@ -70,6 +73,14 @@ public class TestMainPage {
     void testDisplayedFieldStatusOrder(){
         stepMainPage.clickButtonStatusOrder();
         assertTrue(mainPage.statusOrder().isDisplayed());
+    }
+
+    @DisplayName("Тест переход на страницу Для кого самокат после нажатия кнопки Заказать внизу страницы ")
+    @Test
+    void testClickBottomButtonOrder(){
+        stepMainPage.scrollButtonBottomOrder();
+        stepMainPage.clickButtonBottomOrder();
+        assertTrue(stepWhoIsScooter.isDisplayedTextWhoISScooter());
     }
 
 
