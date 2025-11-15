@@ -1,7 +1,6 @@
 package page.main;
 
-import org.openqa.selenium.WebDriver;
-
+import static com.codeborne.selenide.Condition.enabled;
 import static com.codeborne.selenide.logevents.SelenideLogger.step;
 
 
@@ -26,6 +25,12 @@ public class StepMainPage {
         });
     }
 
+    public void scrollButtonBottomOrder(){
+        step("Скролл до кнопки Заказать внизу страницы",()->{
+           mainPage.buttonBottomOrder().scrollTo();
+        });
+    }
+
     public String textQuestion(int i){
         step("получение текста вопроса о Самом важном ", ()->{});
         return mainPage.question(i).getText();
@@ -45,6 +50,13 @@ public class StepMainPage {
     public void clickButtonStatusOrder(){
         step("Нажатие кнопки статус заказа в верхнем правом углу", ()->{
             mainPage.statusOrder().click();
+        });
+    }
+
+    public void clickButtonBottomOrder(){
+        step("Нажатие кнопки Заказать внизу страницы", ()->{
+            mainPage.buttonBottomOrder().shouldBe();
+            mainPage.buttonBottomOrder().click();
         });
     }
 
