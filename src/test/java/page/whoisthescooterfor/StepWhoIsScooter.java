@@ -63,6 +63,11 @@ public class StepWhoIsScooter {
         step("Ввод из списка станции метро",()->{
             scooterPage.listMetro().click();
             scooterPage.listMetro().sendKeys(metro);
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             scooterPage.choiceStationMetro().shouldBe(visible);
 
             scooterPage.choiceStationMetro().click(ClickOptions.withOffset(1,-10));
