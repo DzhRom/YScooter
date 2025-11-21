@@ -41,6 +41,9 @@ public class WhoScooterPage {
     public SelenideElement choiceStationMetro(){
         return $("[class='select-search__select'").as("Выпадающий список");
     }
+    public SelenideElement errorStationMetro(){
+        return $("[class='Order_MetroError__1BtZb']").as("Ошибка Выберите станцию");
+    }
 
 
 
