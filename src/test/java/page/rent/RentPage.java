@@ -56,4 +56,18 @@ public class RentPage {
     public SelenideElement showStatusOrder(){
         return $x(".//button[text()='Посмотреть статус']").as("Кнопка  Посмотреть статус формы Заказ оформлен");
     }
+
+    // Календарь
+    public SelenideElement showCalendar(){
+        return $("[class='react-datepicker__current-month']").as("Клик на календарь");
+    }
+    public SelenideElement buttonPreviousMonth(){
+        return $("[class='react-datepicker__navigation react-datepicker__navigation--previous']").as("Прошлый месяц");
+    }
+    public SelenideElement buttonNextMonth(){
+        return $("[class='react-datepicker__navigation react-datepicker__navigation--next']").as("Следующий месяц");
+    }
+    public SelenideElement dayCalendar(String day){
+        return $x("//div[contains(@class,'react-datepicker__day react-datepicker__day--0"+day+"')]").as("обор дня");
+    }
 }

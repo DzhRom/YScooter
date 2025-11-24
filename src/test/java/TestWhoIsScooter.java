@@ -38,14 +38,6 @@ public class TestWhoIsScooter {
     }
 
 
-    /** stepWhoIsScooter.sendKeysInFieldSurname(faker.name().lastName());
-     stepWhoIsScooter.sendKeysInFieldAddress(faker.address().streetAddress());
-     stepWhoIsScooter.choiceMetro("Котельники");
-     stepWhoIsScooter.sendKeysInFieldPhone(faker.phoneNumber().subscriberNumber(12));
-     stepWhoIsScooter.clickButtonNExt(); */
-
-
-
     @DisplayName("Тест поля ввода Имя на валидные данные")
     @ParameterizedTest( name = "{index} - {0}")
     @CsvFileSource( resources = "nameTrue.csv")
