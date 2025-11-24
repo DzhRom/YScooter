@@ -1,10 +1,14 @@
 package page.rent;
 
 
+import net.datafaker.Faker;
 import page.whoisthescooterfor.StepWhoIsScooter;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.logevents.SelenideLogger.step;
@@ -14,13 +18,14 @@ public class StepRent {
     LocalDate date = LocalDate.now();
     String fdate = date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
     RentPage rentPage = new RentPage();
+    Faker faker = new Faker(new Locale("ru"));
 
    public void stepOneOrder(){
-       stepWhoIsScooter.sendKeysInFieldName("Роман");
-       stepWhoIsScooter.sendKeysInFieldSurname("Романов");
-       stepWhoIsScooter.sendKeysInFieldAddress("Москва 3");
+       stepWhoIsScooter.sendKeysInFieldName(faker.name().firstName());
+       stepWhoIsScooter.sendKeysInFieldSurname(faker.name().lastName());
+       stepWhoIsScooter.sendKeysInFieldAddress(faker.address().streetAddress());
        stepWhoIsScooter.choiceMetro("Котельники");
-       stepWhoIsScooter.sendKeysInFieldPhone("111111111111");
+       stepWhoIsScooter.sendKeysInFieldPhone(faker.phoneNumber().subscriberNumber(12));
        stepWhoIsScooter.clickButtonNExt();
    }
 
@@ -34,6 +39,124 @@ public class StepRent {
            clickAboutRent();
        });
    }
+    //Выбор доставки с учетом перехода с месяца на месяц
+   public void stepSetDate(int day, int month) throws InterruptedException {
+       step("Выбор даты доставки в календаре", () -> {
+       String days;
+       rentPage.fieldWhenToBringScooter().click();
+       if (month < 0) {
+           for (int i = 0; i > month; i-- ){
+               rentPage.buttonPreviousMonth().click();
+           }
+       } else if (month > 0) {
+           for (int i = 0; i < month; i ++){
+               rentPage.buttonNextMonth().click();
+           }
+       }
+
+           GregorianCalendar gc = new GregorianCalendar();
+           int d = gc.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+           if (day < 0) {
+               if (Math.abs(day) > date.getDayOfMonth()) {
+                   int da = (gc.getActualMaximum(Calendar.DAY_OF_MONTH) - (Math.abs(day) - date.getDayOfMonth()));
+                   rentPage.buttonPreviousMonth().click();
+                   rentPage.dayCalendar(String.valueOf(Math.abs(da))).click();
+               } else {
+                   days = String.valueOf(date.getDayOfMonth() + day);
+                   rentPage.dayCalendar(days).click();
+               }
+
+
+           } else if (day > 0) {
+               if ((day + date.getDayOfMonth()) > d) {
+                   rentPage.buttonNextMonth().click();
+                   int da = (day + date.getDayOfMonth()) - Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH);
+                   if (da < 10) {
+                       days = "0" + da;
+                       rentPage.dayCalendar(days).click();
+                   } else {
+                       rentPage.dayCalendar(String.valueOf(da)).click();
+                   }
+
+               } else if (day + date.getDayOfMonth() < d) {
+                   days = String.valueOf(date.getDayOfMonth() + day);
+                   rentPage.dayCalendar(days).click();
+               } else {
+                   days = String.valueOf(date.getDayOfMonth());
+                   rentPage.dayCalendar(days).click();
+               }
+           } else {
+               int da = date.getDayOfMonth();
+               if (da < 10) {
+                   days = "0" + da;
+                   rentPage.dayCalendar(days).click();
+               } else {
+                   rentPage.dayCalendar(String.valueOf(da)).click();
+               }
+           }
+
+       });
+       Thread.sleep(2000);
+
+   }
+
+    /**
+     public void stepSetDate(int day, int month) throws InterruptedException {
+     step("Выбор даты доставки в календаре", () -> {
+     String days;
+     rentPage.fieldWhenToBringScooter().click();
+     if (month < 0) {
+     for (int i = 0; i > month; i-- ){
+     rentPage.buttonPreviousMonth().click();
+     }
+     } else if (month > 0) {
+     for (int i = 0; i < month; i ++){
+     rentPage.buttonNextMonth().click();
+     }
+     } else {
+
+     GregorianCalendar gc = new GregorianCalendar();
+     int d = gc.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+     if (day < 0) {
+     if (Math.abs(day) > date.getDayOfMonth()) {
+     int da = (gc.getActualMaximum(Calendar.DAY_OF_MONTH) - (Math.abs(day) - date.getDayOfMonth()));
+     rentPage.buttonPreviousMonth().click();
+     rentPage.dayCalendar(String.valueOf(Math.abs(da))).click();
+     } else {
+     days = String.valueOf(date.getDayOfMonth() + day);
+     rentPage.dayCalendar(days).click();
+     }
+
+
+     } else if (day > 0) {
+     if ((day + date.getDayOfMonth()) > d) {
+     rentPage.buttonNextMonth().click();
+     int da = (day + date.getDayOfMonth()) - Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH);
+     if (da < 10) {
+     days = "0" + da;
+     rentPage.dayCalendar(days).click();
+     } else {
+     rentPage.dayCalendar(String.valueOf(da)).click();
+     }
+
+     } else if (day + date.getDayOfMonth() < d) {
+     days = String.valueOf(date.getDayOfMonth() + day);
+     rentPage.dayCalendar(days).click();
+     } else {
+     days = String.valueOf(date.getDayOfMonth());
+     rentPage.dayCalendar(days).click();
+     }
+     }
+     }
+     });
+     Thread.sleep(2000);
+
+     }
+     */
+
+
 
    public void selectRentPeriod(int period){
        step("Выбор срока аренды самоката", ()->{

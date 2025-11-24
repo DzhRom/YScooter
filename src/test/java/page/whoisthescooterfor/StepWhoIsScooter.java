@@ -7,7 +7,6 @@ import java.util.Locale;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.logevents.SelenideLogger.step;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class StepWhoIsScooter {
     WhoScooterPage scooterPage = new WhoScooterPage();
@@ -68,7 +67,7 @@ public class StepWhoIsScooter {
             scooterPage.listMetro().click();
             scooterPage.listMetro().sendKeys(metro);
             try {
-                Thread.sleep(200);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
