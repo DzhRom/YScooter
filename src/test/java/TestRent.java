@@ -8,7 +8,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.ValueSource;
 import page.order.OrderPage;
 import page.order.StepOrder;
 import page.rent.RentPage;
@@ -40,13 +39,36 @@ public class TestRent {
         Selenide.closeWebDriver();
     }
 
-    @DisplayName("Тест поля Когда привезти самока")
+    @DisplayName("Тест поля Когда привезти самока c валидными данными")
     @ParameterizedTest()
-    @CsvSource (value  = {"0, -1", "-2, 0", "-1, 0", "0, 0", "1, 0", " 2, 0", "10, 0", "0, 2"})
-    public void testDateRent(int day, int month) throws InterruptedException {
+    @CsvSource (value  = {"1, 0", "2, 0", "0,1"})
+    public void testDateRentTrue(int day, int month) throws InterruptedException {
         stepRent.stepSetDate(day, month);
-
+        stepRent.selectRentPeriod(1);
+        stepRent.clickButtonNext();
+        assertTrue(stepRent.isDisplayedFromPlaceAnOrder());
     }
+
+    @DisplayName("Тест поля Когда привезти самока c не валидными данными")
+    @ParameterizedTest()
+    @CsvSource (value  = {"-10, 0", "-1, 0", "0, -2", "0, 0"})
+    public void testDateRentFalse(int day, int month) throws InterruptedException {
+        stepRent.stepSetDate(day, month);
+        stepRent.selectRentPeriod(1);
+        stepRent.clickButtonNext();
+        assertFalse(stepRent.isDisplayedFromPlaceAnOrder());
+    }
+
+    @DisplayName("Параметризированный тест списка срока аренды")
+    @ParameterizedTest()
+    @CsvSource( value = {"0", "1", "2", "3", "4", "5", "6"})
+    void testSelectPeriodRent(int period) throws InterruptedException {
+        stepRent.stepSetDate(1, 0);
+        stepRent.selectRentPeriod(period);
+        stepRent.clickButtonNext();
+        assertTrue(stepRent.isDisplayedFromPlaceAnOrder());
+    }
+
 
     @DisplayName("Тест поля Срок аренды")
     @Test

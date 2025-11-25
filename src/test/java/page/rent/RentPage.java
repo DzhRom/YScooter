@@ -6,41 +6,46 @@ import com.codeborne.selenide.SelenideElement;
 import static com.codeborne.selenide.Selenide.*;
 
 public class RentPage {
-    public SelenideElement aboutRent(){
+    public SelenideElement aboutRent() {
         return $("[class='Order_Header__BZXOb']").as("Страница Про аренду");
     }
 
-    public SelenideElement fieldWhenToBringScooter(){
+    public SelenideElement fieldWhenToBringScooter() {
         return $x(".//input[@placeholder='* Когда привезти самокат']").as("Поле Когда привезти самокат");
     }
 
-    public SelenideElement fieldRentalPeriod(){
+    public SelenideElement fieldRentalPeriod() {
         return $("[class='Dropdown-placeholder']").as("Поле Срок аренды");
     }
 
-    public ElementsCollection period(){
+    public ElementsCollection period() {
         return (ElementsCollection) $$("[class='Dropdown-option']").as("Список сроков аренды");
     }
 
-    public SelenideElement checkboxBlack(){
+    public SelenideElement checkboxBlack() {
         return $("[id='black']").as("Чек-бокс черный");
     }
-    public SelenideElement checkboxGrey(){
+
+    public SelenideElement checkboxGrey() {
         return $("[id='grey']").as("Чек-бок серый");
     }
 
-    public SelenideElement fieldComment(){
+    public SelenideElement fieldComment() {
         return $x(".//input[@placeholder='Комментарий для курьера']").as("Поле Комментарий для курьера");
     }
 
-    public SelenideElement buttonBack(){
+    public SelenideElement buttonBack() {
         return $("[class='Button_Button__ra12g Button_Middle__1CSJM Button_Inverted__3IF-i']").as("Кнопка назад");
     }
 
-    public SelenideElement buttonNext(){
+    public SelenideElement buttonNext() {
         return $("[class='Button_Button__ra12g Button_Middle__1CSJM']").as("Кнопка Заказать");
     }
 
+
+    public SelenideElement formPlaceAnOrder(){
+        return $("[class='Order_ModalHeader__3FDaJ']").as("Форма Хотите оформить заказ?");
+    }
     public SelenideElement buttonYes(){
         return $x(".//button[text()='Да']").as("Кнопка Да формы Хотите оформить заказ?");
     }
