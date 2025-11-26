@@ -97,65 +97,8 @@ public class StepRent {
            }
 
        });
-       Thread.sleep(2000);
-
+       Thread.sleep(500);
    }
-
-    /**
-     public void stepSetDate(int day, int month) throws InterruptedException {
-     step("Выбор даты доставки в календаре", () -> {
-     String days;
-     rentPage.fieldWhenToBringScooter().click();
-     if (month < 0) {
-     for (int i = 0; i > month; i-- ){
-     rentPage.buttonPreviousMonth().click();
-     }
-     } else if (month > 0) {
-     for (int i = 0; i < month; i ++){
-     rentPage.buttonNextMonth().click();
-     }
-     } else {
-
-     GregorianCalendar gc = new GregorianCalendar();
-     int d = gc.getActualMaximum(Calendar.DAY_OF_MONTH);
-
-     if (day < 0) {
-     if (Math.abs(day) > date.getDayOfMonth()) {
-     int da = (gc.getActualMaximum(Calendar.DAY_OF_MONTH) - (Math.abs(day) - date.getDayOfMonth()));
-     rentPage.buttonPreviousMonth().click();
-     rentPage.dayCalendar(String.valueOf(Math.abs(da))).click();
-     } else {
-     days = String.valueOf(date.getDayOfMonth() + day);
-     rentPage.dayCalendar(days).click();
-     }
-
-
-     } else if (day > 0) {
-     if ((day + date.getDayOfMonth()) > d) {
-     rentPage.buttonNextMonth().click();
-     int da = (day + date.getDayOfMonth()) - Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH);
-     if (da < 10) {
-     days = "0" + da;
-     rentPage.dayCalendar(days).click();
-     } else {
-     rentPage.dayCalendar(String.valueOf(da)).click();
-     }
-
-     } else if (day + date.getDayOfMonth() < d) {
-     days = String.valueOf(date.getDayOfMonth() + day);
-     rentPage.dayCalendar(days).click();
-     } else {
-     days = String.valueOf(date.getDayOfMonth());
-     rentPage.dayCalendar(days).click();
-     }
-     }
-     }
-     });
-     Thread.sleep(2000);
-
-     }
-     */
-
 
 
    public void selectRentPeriod(int period){
@@ -198,6 +141,11 @@ public class StepRent {
        });
    }
 
+   public boolean isDisplayedFromPlaceAnOrder(){
+       step("Ожидание появления формы Хотите оформить заказ?", ()->{
+       });
+       return rentPage.formPlaceAnOrder().isDisplayed();
+   }
    public void clickButtonBack(){
        step("Нажать кнопку Назад", ()->{
            rentPage.buttonBack().click();
