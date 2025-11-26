@@ -4,6 +4,7 @@ package page.rent;
 import net.datafaker.Faker;
 import page.whoisthescooterfor.StepWhoIsScooter;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
@@ -35,7 +36,12 @@ public class StepRent {
 
    public void stepDate(){
        step("Ввод даты в поле Когда привезти самокат",()->{
-          rentPage.fieldWhenToBringScooter().setValue(fdate);
+           SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+           Calendar c = Calendar.getInstance();
+           c.setTime(c.getTime());
+           c.add(Calendar.DATE, 1);
+           String date = formatter.format(c.getTime());
+          rentPage.fieldWhenToBringScooter().setValue(date);
            clickAboutRent();
        });
    }
@@ -95,15 +101,19 @@ public class StepRent {
                    rentPage.dayCalendar(String.valueOf(da)).click();
                }
            }
-
        });
-       Thread.sleep(500);
+       Thread.sleep(200);
    }
 
 
    public void selectRentPeriod(int period){
        step("Выбор срока аренды самоката", ()->{
            rentPage.fieldRentalPeriod().click();
+           try {
+               Thread.sleep(100);
+           } catch (InterruptedException e) {
+               throw new RuntimeException(e);
+           }
            rentPage.period().get(period).shouldBe(visible);
            rentPage.period().get(period).click();
        });
@@ -154,6 +164,7 @@ public class StepRent {
 
    public void clickButtonNext(){
        step("Нажать кнопку Заказать",()->{
+           rentPage.buttonNext().shouldBe(visible);
            rentPage.buttonNext().click();
        });
    }
@@ -194,7 +205,7 @@ public class StepRent {
    }
 
    public String numberOrder() throws InterruptedException {
-       Thread.sleep(100);
+       Thread.sleep(200);
        rentPage.numberOrder().shouldBe(visible);
        String str = getNumberOrder(rentPage.numberOrder().getText());
        return str;

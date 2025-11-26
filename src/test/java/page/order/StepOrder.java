@@ -4,12 +4,16 @@ import net.datafaker.Faker;
 import page.rent.StepRent;
 import page.whoisthescooterfor.StepWhoIsScooter;
 
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import static com.codeborne.selenide.logevents.SelenideLogger.step;
+import static com.fasterxml.jackson.databind.type.LogicalType.DateTime;
 
 public class StepOrder {
 
@@ -36,7 +40,15 @@ public class StepOrder {
         String address = faker.address().streetAddress();
         String phone = faker.phoneNumber().subscriberNumber(12);
         String metro = "Котельники";
-        String date = LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+
+
+        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+        Calendar c = Calendar.getInstance();
+        c.setTime(c.getTime());
+        c.add(Calendar.DATE, 1);
+        String date = formatter.format(c.getTime());
+
+
         int period = faker.number().numberBetween(0, 6);
         int numColor = faker.number().numberBetween(1, 4);
         String comment = "Привет курьер!";
@@ -46,25 +58,25 @@ public class StepOrder {
         stepWhoIsScooter.sendKeysInFieldSurname(surname);
         stepWhoIsScooter.sendKeysInFieldAddress(address);
         stepWhoIsScooter.sendKeysInFieldPhone(phone);
-        Thread.sleep(Duration.ofMillis(500));
+        Thread.sleep(Duration.ofMillis(300));
         stepWhoIsScooter.clickButtonNExt();
 
-        Thread.sleep(Duration.ofMillis(500));
+        Thread.sleep(Duration.ofMillis(300));
 
         stepRent.stepDate();
         stepRent.selectRentPeriod(period);
         stepRent.checkboxColorScooter(numColor);
         stepRent.sendKeyComment(comment);
 
-        Thread.sleep(Duration.ofMillis(500));
+        Thread.sleep(Duration.ofMillis(300));
 
         stepRent.clickButtonNext();
         stepRent.clickButtonYes();
-        Thread.sleep(Duration.ofMillis(500));
+        Thread.sleep(Duration.ofMillis(300));
 
         stepRent.clickButtonShowStatusOrder();
 
-        Thread.sleep(Duration.ofMillis(2000));
+        Thread.sleep(Duration.ofMillis(400));
 
         String data = "";
         switch ( dataName ){
@@ -78,7 +90,7 @@ public class StepOrder {
                 break;            
             case "Станция метро": data = metro;
                 break;
-            case "Дата доставки": data = date;
+            case "Дата доставки": data = dateDelivery();
                 break;
             case "Срок аренды": if ( period == 0) {
                                 data = "сутки";
@@ -114,6 +126,31 @@ public class StepOrder {
 
     public String dataClient(int i){
         return orderPage.dataClient().get(i).getText();
+    }
+
+    public String dateDelivery(){
+        Calendar c = Calendar.getInstance();
+        c.setTime(c.getTime());
+        c.add(Calendar.DATE, 1);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+        int n = c.get(Calendar.MONTH) + 1;
+        String name = String.valueOf(day);
+        switch (n) {
+            case 1: name = name + " января"; break;
+            case 2: name = name + " февраля"; break;
+            case 3: name = name + " марта"; break;
+            case 4: name = name + " апреля"; break;
+            case 5: name = name + " мая"; break;
+            case 6: name = name + " июня"; break;
+            case 7: name = name + " июля"; break;
+            case 8: name = name + " августа"; break;
+            case 9: name = name + " сентября"; break;
+            case 10: name = name + " октября"; break;
+            case 11: name = name + " ноября"; break;
+            case 12: name = name + " декабря"; break;
+        }
+
+        return name;
     }
 
 }
