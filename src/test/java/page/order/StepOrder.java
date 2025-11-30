@@ -1,5 +1,6 @@
 package page.order;
 
+import io.qameta.allure.Step;
 import net.datafaker.Faker;
 import page.rent.StepRent;
 import page.whoisthescooterfor.StepWhoIsScooter;
@@ -12,6 +13,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.logevents.SelenideLogger.step;
 import static com.fasterxml.jackson.databind.type.LogicalType.DateTime;
 
@@ -21,6 +23,7 @@ public class StepOrder {
     StepWhoIsScooter stepWhoIsScooter = new StepWhoIsScooter();
     StepRent stepRent = new StepRent();
 
+    @Step("Получить номер заказа из поля ввода Статус заказа")
     public String numberOrder() {
         step("Получить номер заказа из поля ввода Статус заказа", ()->{
             try {
@@ -118,14 +121,33 @@ public class StepOrder {
             case "Комментарий": data = comment;
                 break;
                 default: data = null;
-            
-
         }
         return data;
     }
 
     public String dataClient(int i){
         return orderPage.dataClient().get(i).getText();
+    }
+
+    public void clickButtonCancelOrder(){
+        orderPage.buttonCancelOrder().click();
+    }
+
+    public void clickButtonBack(){
+        orderPage.buttonBack().shouldBe(visible);
+        orderPage.buttonBack().click();
+    }
+    public void clickButtonCancel(){
+        orderPage.buttonCancel().shouldBe(visible);
+        orderPage.buttonCancel().click();
+    }
+    public void clickButtonGoodCancelOrder(){
+        orderPage.buttonGoodCancelOrder().shouldBe(visible);
+        orderPage.buttonGoodCancelOrder().click();
+    }
+
+    public void creatOrder(){
+
     }
 
     public String dateDelivery(){
@@ -151,6 +173,21 @@ public class StepOrder {
         }
 
         return name;
+    }
+
+    public void stepCancelOrder() throws InterruptedException {
+        stepRent.stepOneOrder();
+        stepRent.order();
+        Thread.sleep(Duration.ofMillis(200));
+        stepRent.clickButtonShowStatusOrder();
+        clickButtonCancelOrder();
+        Thread.sleep(Duration.ofMillis(200));
+        clickButtonCancel();
+        clickButtonGoodCancelOrder();
+
+
+
+
     }
 
 }
