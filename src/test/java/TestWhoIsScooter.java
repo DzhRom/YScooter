@@ -43,7 +43,7 @@ public class TestWhoIsScooter {
 
 
     @Description("Параметризированный тест поля ввода Имя с корректными данными")
-    @DisplayName("Тест поля ввода Имя на валидные данные")
+    @DisplayName("test Field Name Tue")
     @ParameterizedTest( name = "{index} - {0}")
     @CsvFileSource( resources = "nameTrue.csv")
     void testFieldNameTue( String name, String comment ){
@@ -51,7 +51,7 @@ public class TestWhoIsScooter {
         assertFalse(stepWhoIsScooter.isErrorName(), comment);
     }
     @Description("Параметризированный тест поля ввода Имя с некорректными данными")
-    @DisplayName("Тест поля ввода Имя на не валидные данные")
+    @DisplayName("test Field Name False")
     @ParameterizedTest( name = "{index} - {0}")
     @CsvFileSource( resources = "nameFalse.csv")
     void testFieldNameFalse( String name, String comment){
@@ -60,14 +60,16 @@ public class TestWhoIsScooter {
     }
 
 
-    @DisplayName("Тест поля ввода Фамилия на валидные данные")
+    @Description("Тест поля ввода Фамилия на валидные данные")
+    @DisplayName("test Field Surname True")
     @ParameterizedTest( name = "{index} - {0}")
     @CsvFileSource( resources = "surnameTrue.csv")
     void testFieldSurnameTrue( String name, String comment){
         stepWhoIsScooter.sendKeysInFieldSurname(name);
         assertFalse(stepWhoIsScooter.isErrorSurname(), comment);
     }
-    @DisplayName("Тест поля ввода Фамилия на не валидные данные")
+    @Description("Тест поля ввода Фамилия на не валидные данные")
+    @DisplayName("test Field Surname False")
     @ParameterizedTest( name = "{index} - {0}")
     @CsvFileSource( resources = "surnameFalse.csv")
     void testFieldSurnameFalse( String name, String comment ){
@@ -76,14 +78,16 @@ public class TestWhoIsScooter {
     }
 
 
-    @DisplayName("Тест поля ввода Адрес на валидные данные")
+    @Description("Тест поля ввода Адрес на валидные данные")
+    @DisplayName("test Field Address True")
     @ParameterizedTest( name = "{index} - {0}")
     @CsvFileSource( resources = "addressTrue.csv")
     void testFieldAddressTrue( String address, String comment){
         stepWhoIsScooter.sendKeysInFieldAddress(address);
         assertFalse(stepWhoIsScooter.isErrorAddress(), comment);
     }
-    @DisplayName("Тест поля ввода Адрес на не валидные данные")
+    @Description("Тест поля ввода Адрес на не валидные данные")
+    @DisplayName("test Field Address False")
     @ParameterizedTest( name = "{index} - {0}")
     @CsvFileSource( resources = "addressFalse.csv")
     void testFieldAddressFalse( String address, String comment){
@@ -93,14 +97,16 @@ public class TestWhoIsScooter {
 
 
 
-    @DisplayName("Тест поля ввода Телефон на валидные данные")
+    @Description("Тест поля ввода Телефон на валидные данные")
+    @DisplayName("test Field Phone True")
     @ParameterizedTest( name = "{index} - {0}")
     @CsvFileSource( resources = "phoneTrue.csv")
     void testFieldPhoneTrue(String phone, String comment ){
         stepWhoIsScooter.sendKeysInFieldPhone(phone);
         assertFalse(stepWhoIsScooter.isErrorPhone(), comment);
     }
-    @DisplayName("Тест поля ввода Телефон на валидные данные")
+    @Description("Тест поля ввода Телефон на валидные данные")
+    @DisplayName("test Field Phone False")
     @ParameterizedTest( name = "{index} - {0}")
     @CsvFileSource( resources = "phoneFalse.csv")
     void testFieldPhoneFalse(String phone, String comment ){
@@ -109,15 +115,17 @@ public class TestWhoIsScooter {
     }
 
 
-    @DisplayName("Проверка списка станций")
+    @Description("Проверка списка станций")
+    @DisplayName("test Choice Metro")
     @Test
     void testChoiceMetro(){
         stepWhoIsScooter.choiceMetro("Котельники");
         assertEquals( "Котельники", scooterPage.listMetro().getValue());
     }
 
-    @DisplayName("Тест: при пустом поле Имя и заполнеными другими обязателыми полями," +
-            " при нажатии кнопки Дальше, система выдает ошибку Введите корректное имя и не пустает на следующую страницу")
+    @Description("Тест: при пустом поле Имя и заполнеными другими обязателыми полями,\" +\n" +
+            "            \" при нажатии кнопки Дальше, система выдает ошибку Введите корректное имя и не пустает на следующую страницу")
+    @DisplayName("test Necessarily Field Name")
     @ParameterizedTest
     @ValueSource ( strings = {"Имя", "Фамилия", "Метро", "Телефон", "Адрес"})
     void  testNecessarilyFieldName (String nameField) throws InterruptedException {

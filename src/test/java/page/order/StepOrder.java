@@ -35,6 +35,7 @@ public class StepOrder {
         return  orderPage.fieldNumberOrder().getValue();
     }
 
+    @Step("Сравнение введеных пользовательских данных  с отображаемыми данными в статусе заказа")
     public String checkDataNameClient(String dataName) throws InterruptedException {
         Faker faker = new Faker(new Locale("ru"));
         faker.locality() ;
@@ -125,31 +126,33 @@ public class StepOrder {
         return data;
     }
 
+
     public String dataClient(int i){
         return orderPage.dataClient().get(i).getText();
     }
 
+    @Step("Нажать кнопку Отменить заказ")
     public void clickButtonCancelOrder(){
         orderPage.buttonCancelOrder().click();
     }
 
+    @Step("Нажать кнопку Назад")
     public void clickButtonBack(){
         orderPage.buttonBack().shouldBe(visible);
         orderPage.buttonBack().click();
     }
+    @Step("Нажать кнопку Отменить")
     public void clickButtonCancel(){
         orderPage.buttonCancel().shouldBe(visible);
         orderPage.buttonCancel().click();
     }
+    @Step("Нажать кнопку Хорошо при отмене заказа")
     public void clickButtonGoodCancelOrder(){
         orderPage.buttonGoodCancelOrder().shouldBe(visible);
         orderPage.buttonGoodCancelOrder().click();
     }
 
-    public void creatOrder(){
-
-    }
-
+    //Преобразование даты в письменную форму для проверки даты доставки самоката
     public String dateDelivery(){
         Calendar c = Calendar.getInstance();
         c.setTime(c.getTime());
@@ -175,6 +178,7 @@ public class StepOrder {
         return name;
     }
 
+    @Step("")
     public void stepCancelOrder() throws InterruptedException {
         stepRent.stepOneOrder();
         stepRent.order();
@@ -184,10 +188,6 @@ public class StepOrder {
         Thread.sleep(Duration.ofMillis(200));
         clickButtonCancel();
         clickButtonGoodCancelOrder();
-
-
-
-
     }
 
 }
