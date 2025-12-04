@@ -3,8 +3,7 @@ package page.order;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$$;
+import static com.codeborne.selenide.Selenide.*;
 
 public class OrderPage {
 
@@ -13,7 +12,7 @@ public class OrderPage {
     }
 
     public SelenideElement buttonCancelOrder() {
-        return $("[class='Button_Button__ra12g Button_Middle__1CSJM Button_Inverted__3IF-i']").as("Кнопка Отменить заказ");
+        return $x(".//button[text()='Отменить заказ']").as("Кнопка Отменить заказ");
     }
 
     public ElementsCollection nameDataClient(){
@@ -28,4 +27,14 @@ public class OrderPage {
         return $$("[class='Track_Row__1sN1F']").as("Строка данных клиента");
     }
 
+    public SelenideElement buttonBack() {
+        return $x(".//button[text()='Назад']").as("Кнопка назад в окне отмены заказа");
+    }
+     public SelenideElement buttonCancel() {
+        return $x(".//button[text()='Отменить']").as("Кнопка Отменить в окне отмены заказа ");
+    }
+
+    public SelenideElement buttonGoodCancelOrder() {
+        return $x(".//button[text()='Хорошо']").as("Заказа отменем кнопка Хорошо");
+    }
 }

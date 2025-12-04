@@ -4,11 +4,14 @@ package page.rent;
 import net.datafaker.Faker;
 import page.whoisthescooterfor.StepWhoIsScooter;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+import io.qameta.allure.Description;
+import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.logevents.SelenideLogger.step;
@@ -33,16 +36,42 @@ public class StepRent {
        rentPage.aboutRent().click();
    }
 
+   @Step("Ввод даты в поле Когда привезти самокат")
    public void stepDate(){
        step("Ввод даты в поле Когда привезти самокат",()->{
-          rentPage.fieldWhenToBringScooter().setValue(fdate);
+           SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+           Calendar c = Calendar.getInstance();
+           c.setTime(c.getTime());
+           c.add(Calendar.DATE, 1);
+           String date = formatter.format(c.getTime());
+          rentPage.fieldWhenToBringScooter().setValue(date);
            clickAboutRent();
        });
    }
+
+    @Step("Выбор даты доставки в календаре")
+    public void stepSetDateNew(int day) throws InterruptedException {
+        step("Выбор даты доставки в календаре", () -> {
+            SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyyy");
+            Calendar c = Calendar.getInstance();
+            c.setTime(c.getTime());
+            c.add(Calendar.DATE, day);
+            String date = format.format(c.getTime());
+            rentPage.fieldWhenToBringScooter().click();
+            rentPage.dayCalendar(date).click();
+        });
+        Thread.sleep(200);
+    }
+
+
+
+
+
     //Выбор доставки с учетом перехода с месяца на месяц
    public void stepSetDate(int day, int month) throws InterruptedException {
        step("Выбор даты доставки в календаре", () -> {
-       String days;
+
+           String days;
        rentPage.fieldWhenToBringScooter().click();
        if (month < 0) {
            for (int i = 0; i > month; i-- ){
@@ -95,15 +124,20 @@ public class StepRent {
                    rentPage.dayCalendar(String.valueOf(da)).click();
                }
            }
-
        });
-       Thread.sleep(500);
+       Thread.sleep(200);
    }
 
 
+   @Step("Выбор срока аренды самоката")
    public void selectRentPeriod(int period){
        step("Выбор срока аренды самоката", ()->{
            rentPage.fieldRentalPeriod().click();
+           try {
+               Thread.sleep(100);
+           } catch (InterruptedException e) {
+               throw new RuntimeException(e);
+           }
            rentPage.period().get(period).shouldBe(visible);
            rentPage.period().get(period).click();
        });
@@ -154,6 +188,7 @@ public class StepRent {
 
    public void clickButtonNext(){
        step("Нажать кнопку Заказать",()->{
+           rentPage.buttonNext().shouldBe(visible);
            rentPage.buttonNext().click();
        });
    }
@@ -170,6 +205,7 @@ public class StepRent {
 
    public void clickButtonShowStatusOrder(){
        step("Нажать кнопку Посмотреть статус формы Заказ оформлен", ()->{
+           rentPage.showStatusOrder().shouldBe(visible);
            rentPage.showStatusOrder().click();
        });
    }
@@ -194,7 +230,7 @@ public class StepRent {
    }
 
    public String numberOrder() throws InterruptedException {
-       Thread.sleep(100);
+       Thread.sleep(200);
        rentPage.numberOrder().shouldBe(visible);
        String str = getNumberOrder(rentPage.numberOrder().getText());
        return str;

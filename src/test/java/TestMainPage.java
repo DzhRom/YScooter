@@ -27,6 +27,7 @@ public class TestMainPage {
         stepMainPage = new StepMainPage();
         stepWhoIsScooter = new StepWhoIsScooter();
         mainPage = new MainPage();
+        Configuration.browser = "edge";
         Configuration.browserSize = "1920x1080";
         open(Constants.MAIN_URL);
     }
@@ -79,6 +80,4 @@ public class TestMainPage {
         stepMainPage.clickButtonBottomOrder();
         assertTrue(stepWhoIsScooter.isDisplayedTextWhoISScooter());
     }
-
-
 }

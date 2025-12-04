@@ -12,9 +12,12 @@ import page.order.OrderPage;
 import page.order.StepOrder;
 import page.rent.RentPage;
 import page.rent.StepRent;
+import io.qameta.allure.selenide.AllureSelenide;
 
 import static com.codeborne.selenide.Selenide.*;
 import static org.junit.jupiter.api.Assertions.*;
+import io.qameta.allure.Description;
+import io.qameta.allure.Step;
 
 public class TestRent {
     private StepRent stepRent;
@@ -41,13 +44,14 @@ public class TestRent {
 
     @DisplayName("Тест поля Когда привезти самока c валидными данными")
     @ParameterizedTest()
-    @CsvSource (value  = {"1, 0", "2, 0", "0,1"})
+    @CsvSource(value = {"1, 0", "2, 0", "0,1"})
     public void testDateRentTrue(int day, int month) throws InterruptedException {
         stepRent.stepSetDate(day, month);
         stepRent.selectRentPeriod(1);
         stepRent.clickButtonNext();
         assertTrue(stepRent.isDisplayedFromPlaceAnOrder());
     }
+
 
     @DisplayName("Тест поля Когда привезти самока c не валидными данными")
     @ParameterizedTest()
@@ -59,6 +63,7 @@ public class TestRent {
         assertFalse(stepRent.isDisplayedFromPlaceAnOrder());
     }
 
+
     @DisplayName("Параметризированный тест списка срока аренды")
     @ParameterizedTest()
     @CsvSource( value = {"0", "1", "2", "3", "4", "5", "6"})
@@ -68,6 +73,8 @@ public class TestRent {
         stepRent.clickButtonNext();
         assertTrue(stepRent.isDisplayedFromPlaceAnOrder());
     }
+
+
 
 
     @DisplayName("Тест поля Срок аренды")
@@ -97,4 +104,5 @@ public class TestRent {
         stepRent.clickButtonShowStatusOrder();
         assertEquals(stepOrder.numberOrder(), str);
     }
+
 }

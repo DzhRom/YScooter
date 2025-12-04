@@ -1,6 +1,8 @@
+
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
 import constatnts.Constants;
+import io.qameta.allure.Description;
 import net.datafaker.Faker;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,6 +30,7 @@ public class TestWhoIsScooter {
         scooterPage = new WhoScooterPage();
         faker = new Faker(new Locale("ru"));
         stepWhoIsScooter = new StepWhoIsScooter();
+        Configuration.browser = "edge";
         Configuration.browserSize = "1920x1080";
         open(Constants.WHO_IS_SCOOTER);
     }
@@ -38,6 +41,8 @@ public class TestWhoIsScooter {
     }
 
 
+
+    @Description("Параметризированный тест поля ввода Имя с корректными данными")
     @DisplayName("Тест поля ввода Имя на валидные данные")
     @ParameterizedTest( name = "{index} - {0}")
     @CsvFileSource( resources = "nameTrue.csv")
@@ -45,6 +50,7 @@ public class TestWhoIsScooter {
         stepWhoIsScooter.sendKeysInFieldName(name);
         assertFalse(stepWhoIsScooter.isErrorName(), comment);
     }
+    @Description("Параметризированный тест поля ввода Имя с некорректными данными")
     @DisplayName("Тест поля ввода Имя на не валидные данные")
     @ParameterizedTest( name = "{index} - {0}")
     @CsvFileSource( resources = "nameFalse.csv")
