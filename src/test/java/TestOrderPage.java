@@ -2,6 +2,7 @@
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
 import constatnts.Constants;
+import io.qameta.allure.Description;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -34,7 +35,8 @@ public class TestOrderPage {
         Selenide.closeWebDriver();
     }
 
-    @DisplayName("Тест соответствия вводимых данных клиента с отображением информации на форме Статус заказа")
+    @Description("Параметризированный тест соответствия вводимых данных клиента с отображением информации на форме Статус заказа")
+    @DisplayName("check Data Client")
     @ParameterizedTest
     @CsvSource(value = {
             "Имя, 0, Имя не совпадает",
@@ -55,7 +57,8 @@ public class TestOrderPage {
         assertEquals(str3, stepOrder.dataClient(i), errorMessage);
     }
 
-    @DisplayName("Тест отмены заказа")
+    @Description("Тест отмены заказа")
+    @DisplayName("test Cancel Order")
     @Test
     void testCancelOrder() throws InterruptedException {
         stepOrder.stepCancelOrder();

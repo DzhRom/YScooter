@@ -12,12 +12,11 @@ import page.order.OrderPage;
 import page.order.StepOrder;
 import page.rent.RentPage;
 import page.rent.StepRent;
-import io.qameta.allure.selenide.AllureSelenide;
 
 import static com.codeborne.selenide.Selenide.*;
 import static org.junit.jupiter.api.Assertions.*;
 import io.qameta.allure.Description;
-import io.qameta.allure.Step;
+
 
 public class TestRent {
     private StepRent stepRent;
@@ -42,9 +41,10 @@ public class TestRent {
         Selenide.closeWebDriver();
     }
 
-    @DisplayName("Тест поля Когда привезти самока c валидными данными")
+    @Description("Тест поля Когда привезти самока c валидными данными")
+    @DisplayName("test Date Rent True")
     @ParameterizedTest()
-    @CsvSource(value = {"1, 0", "2, 0", "0,1"})
+    @CsvSource(value = {"1, 0", "2, 0", "0,1" })
     public void testDateRentTrue(int day, int month) throws InterruptedException {
         stepRent.stepSetDate(day, month);
         stepRent.selectRentPeriod(1);
@@ -53,7 +53,8 @@ public class TestRent {
     }
 
 
-    @DisplayName("Тест поля Когда привезти самока c не валидными данными")
+    @Description("Тест поля Когда привезти самока c не валидными данными")
+    @DisplayName("test Date Rent False")
     @ParameterizedTest()
     @CsvSource (value  = {"-10, 0", "-1, 0", "0, -2", "0, 0"})
     public void testDateRentFalse(int day, int month) throws InterruptedException {
@@ -64,7 +65,8 @@ public class TestRent {
     }
 
 
-    @DisplayName("Параметризированный тест списка срока аренды")
+    @Description("Параметризированный тест списка срока аренд")
+    @DisplayName("test Select Period Rent")
     @ParameterizedTest()
     @CsvSource( value = {"0", "1", "2", "3", "4", "5", "6"})
     void testSelectPeriodRent(int period) throws InterruptedException {
@@ -75,28 +77,30 @@ public class TestRent {
     }
 
 
-
-
-    @DisplayName("Тест поля Срок аренды")
+    @Description("Тест поля Срок аренды")
+    @DisplayName("test Rental Period")
     @Test
     void testRentalPeriod(){
         stepRent.selectRentPeriod(1);
     }
 
-    @DisplayName("Тест выбора цвета самоката")
+    @Description("Тест выбора цвета самоката")
+    @DisplayName("test Checkbox Color")
     @Test
     void testCheckboxColor(){
         stepRent.selectCheckboxColorBlack();
         stepRent.selectCheckboxColorGrey();
     }
 
-    @DisplayName("Тест поля ввода Комментарий для курьера")
+    @Description("Тест поля ввода Комментарий для курьера")
+    @DisplayName("test Comment")
     @Test
     void testComment(){
         stepRent.sendKeyComment("Привет. Как дела курьер?!");
     }
 
-    @DisplayName("Тест сравнения статусов заказов")
+    @Description("Тест сравнения статусов заказов")
+    @DisplayName("test Status Order")
     @Test
     void testStatusOrder() throws InterruptedException {
         stepRent.order();

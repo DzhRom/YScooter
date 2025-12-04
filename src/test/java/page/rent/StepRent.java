@@ -82,50 +82,68 @@ public class StepRent {
                rentPage.buttonNextMonth().click();
            }
        }
+            //Присваиваем в d массимальное число
+          LocalDate localDate = LocalDate.now();
+          Calendar calendar = Calendar.getInstance();
+          String setDate ;
+          int  tempDay;
 
-           GregorianCalendar gc = new GregorianCalendar();
-           int d = gc.getActualMaximum(Calendar.DAY_OF_MONTH);
+         if (day == 0){
+             if (localDate.getDayOfMonth() < 10) {
+                 setDate = datePlusO(localDate.getDayOfMonth());
+                 rentPage.dayCalendar(setDate).click();
+             } else {setDate = String.valueOf(day);
+                 rentPage.dayCalendar(setDate).click();}
 
-           if (day < 0) {
-               if (Math.abs(day) > date.getDayOfMonth()) {
-                   int da = (gc.getActualMaximum(Calendar.DAY_OF_MONTH) - (Math.abs(day) - date.getDayOfMonth()));
-                   rentPage.buttonPreviousMonth().click();
-                   rentPage.dayCalendar(String.valueOf(Math.abs(da))).click();
-               } else {
-                   days = String.valueOf(date.getDayOfMonth() + day);
-                   rentPage.dayCalendar(days).click();
+         } else if (day < 0) {
+             if (localDate.getDayOfMonth() - Math.abs(day) < 0) {
+                 rentPage.buttonPreviousMonth().click();
+                 calendar.add(Calendar.MONTH, -1);
+                 int m = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+                 tempDay =  m - Math.abs(localDate.getDayOfMonth() - Math.abs(day));
+                 if (tempDay < 10) {
+                     setDate = datePlusO(tempDay);
+                     rentPage.dayCalendar(setDate).click();
+                 } else {setDate = String.valueOf(tempDay);
+                 rentPage.dayCalendar(setDate).click();}
+             } else if (localDate.getDayOfMonth() - Math.abs(day) > 0) {
+                 tempDay = localDate.getDayOfMonth() - Math.abs(day);
+                 if (tempDay < 10) {
+                     setDate = datePlusO(tempDay);
+                     rentPage.dayCalendar(setDate).click();
+                 } else {setDate = String.valueOf(tempDay);
+                 rentPage.dayCalendar(setDate).click();}
+             }
+         } else {
+
+             if ( day + localDate.getDayOfMonth() > calendar.getActualMaximum(Calendar.DAY_OF_MONTH)) {
+                 rentPage.buttonNextMonth().click();
+                 tempDay = Math.abs(calendar.getActualMaximum(Calendar.DAY_OF_MONTH) - ( day + localDate.getDayOfMonth()));
+                 if (tempDay < 10) {
+                     setDate = datePlusO(tempDay);
+                     rentPage.dayCalendar(setDate).click();
+                 } else {setDate = String.valueOf(tempDay);
+                 rentPage.dayCalendar(setDate).click();}
+             } else {
+                 tempDay = localDate.getDayOfMonth() + day;
+                 if (tempDay < 10) {
+                     setDate = datePlusO(tempDay);
+                     rentPage.dayCalendar(setDate).click();
+                 } else {setDate = String.valueOf(tempDay);
+                     rentPage.dayCalendar(setDate).click();}
+             }
+         }
+           });
+               try {
+                   Thread.sleep(200);
+               } catch (InterruptedException e) {
+                   throw new RuntimeException(e);
                }
+   }
 
-
-           } else if (day > 0) {
-               if ((day + date.getDayOfMonth()) > d) {
-                   rentPage.buttonNextMonth().click();
-                   int da = (day + date.getDayOfMonth()) - Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH);
-                   if (da < 10) {
-                       days = "0" + da;
-                       rentPage.dayCalendar(days).click();
-                   } else {
-                       rentPage.dayCalendar(String.valueOf(da)).click();
-                   }
-
-               } else if (day + date.getDayOfMonth() < d) {
-                   days = String.valueOf(date.getDayOfMonth() + day);
-                   rentPage.dayCalendar(days).click();
-               } else {
-                   days = String.valueOf(date.getDayOfMonth());
-                   rentPage.dayCalendar(days).click();
-               }
-           } else {
-               int da = date.getDayOfMonth();
-               if (da < 10) {
-                   days = "0" + da;
-                   rentPage.dayCalendar(days).click();
-               } else {
-                   rentPage.dayCalendar(String.valueOf(da)).click();
-               }
-           }
-       });
-       Thread.sleep(200);
+   public String datePlusO(int day){
+       String days = "0"+ String.valueOf(day);
+       return days;
    }
 
 
@@ -143,18 +161,21 @@ public class StepRent {
        });
    }
 
+   @Step("Выбрать черный цвет")
    public void selectCheckboxColorBlack(){
        step("Выбрать черный цвет",()->{
                rentPage.checkboxBlack().click();
        });
    }
 
+   @Step("Выбрать серый цвет")
    public void selectCheckboxColorGrey(){
        step("Выбрать серый цвет",()->{
            rentPage.checkboxGrey().click();
        });
    }
 
+   @Step("Выбрать цвета самоката")
    public void checkboxColorScooter(int numColor){
        step("Выбрать цвет самоката", ()->{
           if (numColor == 1){
@@ -168,6 +189,7 @@ public class StepRent {
        });
    }
 
+   @Step("Ввести комментарий в поле Коментарий для курьера")
    public void sendKeyComment(String comment){
        step("Ввести в поле Коментарий для курьера", ()->{
            rentPage.fieldComment().clear();
@@ -175,34 +197,40 @@ public class StepRent {
        });
    }
 
+   @Step("Ожидание появления формы Хотите оформить заказ?")
    public boolean isDisplayedFromPlaceAnOrder(){
        step("Ожидание появления формы Хотите оформить заказ?", ()->{
        });
        return rentPage.formPlaceAnOrder().isDisplayed();
    }
+   @Step("Нажать кнопку Назад")
    public void clickButtonBack(){
        step("Нажать кнопку Назад", ()->{
            rentPage.buttonBack().click();
        });
    }
 
+   @Step("Customize Toolbar...")
    public void clickButtonNext(){
        step("Нажать кнопку Заказать",()->{
            rentPage.buttonNext().shouldBe(visible);
            rentPage.buttonNext().click();
        });
    }
+    @Step("Нажать кнопку Да в форме Хотите оформить заказ")
    public void clickButtonYes(){
        step("Нажать кнопку Да в форме Хотите оформить заказ",()->{
            rentPage.buttonYes().click();
        });
    }
+    @Step("Нажать кнопку Нет формы Хотите оформить заказ")
    public void clickButtonNo(){
        step("Нажать кнопку Нет формы Хотите оформить заказ", ()->{
            rentPage.buttonNo().click();
        });
    }
 
+    @Step("Нажать кнопку Посмотреть статус формы Заказ оформлен")
    public void clickButtonShowStatusOrder(){
        step("Нажать кнопку Посмотреть статус формы Заказ оформлен", ()->{
            rentPage.showStatusOrder().shouldBe(visible);
@@ -218,6 +246,7 @@ public class StepRent {
 
 
    /*Тестовый метод заполнения заказа*/
+   @Step("Создание тестового заказа")
    public void order() {
        step("Создание заказа",()->{
        stepDate();

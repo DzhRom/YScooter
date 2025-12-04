@@ -1,68 +1,54 @@
 package page.main;
 
-import static com.codeborne.selenide.Condition.enabled;
-import static com.codeborne.selenide.logevents.SelenideLogger.step;
-
+import io.qameta.allure.Step;
 
 public class StepMainPage {
     MainPage mainPage = new MainPage();
 
+    @Step("Проверка отображения главной страницы сайта")
     public boolean isDisplayMainText(){
-        step("Проверка отображения главной страницы сайта", ()->{
-            });
         return mainPage.scooter().isDisplayed();
     }
 
+    @Step("Нажатие кнопки Заказать в верхнем правом углу")
     public void clickButtonOrder(){
-        step("Нажатие кнопки Заказать в верхнем правом углу", ()->{
-            mainPage.buttonOrder().click();
-        });
+        mainPage.buttonOrder().click();
     }
 
+    @Step("Скролл сайта до вопросов о Самом важном")
     public void scrollQuestionAndAnswer(){
-        step("Скролл сайта до вопросов о Самом важном", ()->{
-           mainPage.questionAndAnswer().get(0).scrollTo();
-        });
+        mainPage.questionAndAnswer().get(0).scrollTo();
     }
 
+    @Step("Скролл до кнопки Заказать внизу страницы")
     public void scrollButtonBottomOrder(){
-        step("Скролл до кнопки Заказать внизу страницы",()->{
            mainPage.buttonBottomOrder().scrollTo();
-        });
     }
 
+    @Step("получение текста вопроса о Самом важном")
     public String textQuestion(int i){
-        step("получение текста вопроса о Самом важном ", ()->{});
         return mainPage.question(i).getText();
     }
 
+    @Step("клик на вопрос о Самом важном")
     public void clickButtonAnswer(int i){
-        step("клик на вопрос о Самом важном", ()->{
-            mainPage.question(i).click();
-        });
+        mainPage.question(i).click();
     }
 
+    @Step("получения текста ответа на вопрос о Самом важном")
     public String textAnswer(int i){
-        step("получения текста ответа на вопрос о Самом важном", ()-> {});
         return mainPage.answer(i).getText();
     }
 
+    @Step("Нажатие кнопки статус заказа в верхнем правом углу")
     public void clickButtonStatusOrder(){
-        step("Нажатие кнопки статус заказа в верхнем правом углу", ()->{
-            mainPage.statusOrder().click();
-        });
+        mainPage.statusOrder().click();
     }
 
+    @Step("Нажатие кнопки Заказать внизу страницы")
     public void clickButtonBottomOrder(){
-        step("Нажатие кнопки Заказать внизу страницы", ()->{
-            mainPage.buttonBottomOrder().shouldBe();
-            mainPage.buttonBottomOrder().click();
-        });
+        mainPage.buttonBottomOrder().shouldBe();
+        mainPage.buttonBottomOrder().click();
     }
 
-   /** public boolean displayedFieldStatusOrder(){
-        step("��������� ���� ����� ������ ������", ()->{});
-        return mainPage.statusOrder().isDisplayed();
-    }
-    */
 }
